@@ -136,7 +136,7 @@ function PantryLayoutContent({ children }: { children: React.ReactNode }) {
       <SidebarInset className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-background/50 backdrop-blur-sm px-6 sticky top-0 z-30 md:hidden">
            <SidebarTrigger/>
-           <h2 className="font-semibold">Pantry Chef</h2>
+           <h2 className="font-semibold">ChefAI</h2>
         </header>
         {children}
       </SidebarInset>

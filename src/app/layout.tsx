@@ -4,7 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/auth-context';
 
 export const metadata: Metadata = {
-  title: 'Pantry Chef',
+  title: 'ChefAI',
   description: 'Your smart kitchen assistant. Get recipes from ingredients you already have.',
 };
 
