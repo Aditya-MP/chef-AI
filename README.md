@@ -1,9 +1,4 @@
-# VS Code 
-
-Here’s your altered README adapted to fit your ChefAI project built using modern React tools, without Firebase mentions, and aligning with your hackathon concept:
-
 ⸻
-
 
 # 🍳 ChefAI – AI Recipe Generator
 
