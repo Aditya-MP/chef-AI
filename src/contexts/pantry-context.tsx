@@ -121,7 +121,7 @@ export function PantryProvider({ children }: { children: ReactNode }) {
       });
       setGeneratedRecipe(recipe);
       setIsRecipeVisible(true);
-      // Here you would save the recipe to Firestore history
+      // Firestore is not used
     } catch (error) {
       toast({
         title: 'Recipe Generation Failed',

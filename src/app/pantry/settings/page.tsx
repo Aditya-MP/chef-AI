@@ -1,17 +1,16 @@
 'use client';
 
-import { useAuth } from '@/hooks/use-auth';
+// Removed useAuth since authentication is disabled
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+// Removed Firebase password reset
 import { useEffect, useState } from 'react';
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  // No user context
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -20,13 +19,13 @@ export default function SettingsPage() {
   }, []);
 
   const handlePasswordReset = async () => {
-    if (!user?.email) return;
     try {
-      await sendPasswordResetEmail(auth, user.email);
-      toast({
-        title: 'Password Reset Email Sent',
-        description: `An email has been sent to ${user.email} with instructions.`,
-      });
+    // Password reset logic removed
+    toast({
+      title: 'Password Reset Disabled',
+      description: 'Authentication is disabled in this app.',
+      variant: 'destructive',
+    });
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
     }
@@ -61,8 +60,8 @@ export default function SettingsPage() {
                     <p className="font-semibold">Change Password</p>
                     <p className="text-sm text-muted-foreground">Receive an email to reset your password.</p>
                 </div>
-                <Button variant="outline" onClick={handlePasswordReset}>
-                    Send Reset Link
+                <Button onClick={handlePasswordReset}>
+                  Reset Password
                 </Button>
             </div>
         </CardContent>

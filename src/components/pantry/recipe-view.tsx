@@ -8,12 +8,12 @@ import { ArrowLeft, ChefHat, Heart, Star } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
 import { useState } from 'react';
-import { useAuth } from '@/hooks/use-auth';
+// Removed useAuth since authentication is disabled
 import { useToast } from '@/hooks/use-toast';
 
 export default function RecipeView() {
   const { generatedRecipe, clearRecipe, selectedIngredients } = usePantry();
-  const { user } = useAuth();
+  // No user context
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -116,7 +116,7 @@ export default function RecipeView() {
                                 />
                                 ))}
                             </div>
-                            <Textarea placeholder={`What did you think, ${user?.displayName ?? 'chef'}?`} className="max-w-lg"/>
+                            <Textarea placeholder={`What did you think, chef?`} className="max-w-lg"/>
                             <Button onClick={handleFeedbackSubmit}>Submit Review</Button>
                         </div>
                     </div>

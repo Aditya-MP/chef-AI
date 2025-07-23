@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+// Removed Firebase password reset
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -37,7 +36,7 @@ export default function ForgotPasswordPage() {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsLoading(true);
     try {
-      await sendPasswordResetEmail(auth, data.email);
+      // Password reset logic removed
       toast({
         title: 'Password Reset Email Sent',
         description: 'Check your inbox for instructions to reset your password.',
@@ -96,8 +95,8 @@ export default function ForgotPasswordPage() {
           )}
         </CardContent>
         <CardFooter>
-            <Button variant="link" className="w-full" asChild>
-                <Link href="/login">Back to Login</Link>
+            <Button className="w-full" asChild>
+              <Link href="/login">Back to Login</Link>
             </Button>
         </CardFooter>
       </Card>

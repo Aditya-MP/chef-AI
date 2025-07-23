@@ -1,7 +1,5 @@
-'use client';
-
 import HomePage from './home';
 
-export default function Home() {
+export default function Main() {
   return <HomePage />;
 }
