@@ -148,5 +148,4 @@ This project is open-source and built for educational and hackathon use only.
 
 ---
 
-Would you like this as a downloadable .md file or want me to help style it directly for GitHub with badges and visuals?
  
