@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { PantryProvider } from '@/contexts/pantry-context';
 import IngredientSelector from '@/components/pantry/ingredient-selector';
-import ProfilePage from '@/app/pantry/profile/page';
 import DietaryFilters from '@/components/pantry/dietary-filters';
 import RecipeView from '@/components/pantry/recipe-view';
+import dynamic from 'next/dynamic';
+
+const ProfilePage = dynamic(() => import('./pantry/profile/page'));
+const SettingsPage = dynamic(() => import('./pantry/settings/page'));
+const FullRecipeViewPage = dynamic(() => import('./pantry/fullrecipe/page'));
 
 const sidebarItems = [
   { label: 'Full Recipe View', key: 'fullrecipe' },
@@ -11,6 +15,20 @@ const sidebarItems = [
 
 export default function HomePage() {
   const [activeSidebar, setActiveSidebar] = useState('recent');
+
+  // Debug panel state
+  const [debugPantry, setDebugPantry] = useState<string[]>([]);
+  const [showDebug, setShowDebug] = useState(false);
+
+  // Get userId from localStorage (set after login)
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+
+  const fetchPantry = async () => {
+    if (!userId) return;
+    const res = await fetch(`/api/pantry?userId=${userId}`);
+    const data = await res.json();
+    setDebugPantry(data);
+  };
 
   return (
     <PantryProvider>
@@ -68,9 +86,30 @@ export default function HomePage() {
         
         {/* Main Content */}
         <main className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 lg:px-12 py-8 gap-8 bg-transparent">
-          {activeSidebar === 'profile' ? (
-            <ProfilePage />
-          ) : (
+          {/* Debug Panel for Pantry (for dev only, can be removed in prod) */}
+          <div className="mb-2">
+            <button
+              className="text-xs px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 mb-1"
+              onClick={() => {
+                setShowDebug((v) => !v);
+                if (!showDebug) fetchPantry();
+              }}
+            >
+              {showDebug ? 'Hide' : 'Show'} Pantry Debug
+            </button>
+            {showDebug && (
+              <div className="bg-white border rounded p-2 text-xs text-gray-700">
+                <div className="font-bold mb-1">Stored Pantry (DB):</div>
+                <ul className="list-disc ml-4">
+                  {debugPantry.length > 0 ? debugPantry.map((item) => (
+                    <li key={item}>{item}</li>
+                  )) : <li className="text-gray-400">(empty)</li>}
+                </ul>
+                <div className="text-xs text-gray-400 mt-2">userId: {userId || '(not set)'}</div>
+              </div>
+            )}
+          </div>
+          {activeSidebar === 'dashboard' || activeSidebar === 'recent' || activeSidebar === 'favorites' ? (
             <>
               <div className="mb-6">
                 <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
@@ -85,7 +124,7 @@ export default function HomePage() {
                 <section className="bg-white/95 rounded-2xl shadow-lg p-6 flex flex-col gap-6 min-h-[480px] border border-gray-100">
                   <h3 className="text-xl font-bold text-gray-800">Select Ingredients</h3>
                   <div className="flex-1 flex flex-col justify-center">
-                    <IngredientSelector />
+                    <IngredientSelector userId={userId} />
                   </div>
                 </section>
                 {/* Right Panel: AI Generated Recipes */}
@@ -111,7 +150,13 @@ export default function HomePage() {
                 </section>
               </div>
             </>
-          )}
+          ) : activeSidebar === 'profile' ? (
+            <ProfilePage />
+          ) : activeSidebar === 'settings' ? (
+            <SettingsPage />
+          ) : activeSidebar === 'fullrecipe' ? (
+            <FullRecipeViewPage />
+          ) : null}
         </main>
       </div>
     </PantryProvider>

@@ -29,6 +29,7 @@ interface DietaryFilters {
 interface PantryContextType {
   ingredients: Ingredient[];
   selectedIngredients: Set<string>;
+  setSelectedIngredients: (s: Set<string>) => void;
   toggleIngredient: (ingredientName: string) => void;
   recognizeFromImage: (photoDataUri: string) => Promise<void>;
   filters: DietaryFilters;
@@ -121,7 +122,7 @@ export function PantryProvider({ children }: { children: ReactNode }) {
       });
       setGeneratedRecipe(recipe);
       setIsRecipeVisible(true);
-      // Firestore is not used
+      // Do NOT clear pantry after generating recipe
     } catch (error) {
       toast({
         title: 'Recipe Generation Failed',
@@ -144,6 +145,7 @@ export function PantryProvider({ children }: { children: ReactNode }) {
   const value = {
     ingredients,
     selectedIngredients,
+    setSelectedIngredients,
     toggleIngredient,
     recognizeFromImage,
     filters,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { usePantry } from '@/hooks/use-pantry';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,11 +11,11 @@ import { Camera, Loader2, Search } from 'lucide-react';
 import DietaryFilters from './dietary-filters';
 import { useToast } from '@/hooks/use-toast';
 
-export default function IngredientSelector() {
+export default function IngredientSelector({ userId }: { userId: string | null }) {
   const {
     ingredients,
     selectedIngredients,
-    toggleIngredient,
+    setSelectedIngredients,
     handleGenerateRecipe,
     isLoading,
     recognizeFromImage,
@@ -23,6 +23,37 @@ export default function IngredientSelector() {
   const [searchTerm, setSearchTerm] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  // Fetch pantry from DB on mount
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`/api/pantry?userId=${userId}`)
+      .then(res => res.json())
+      .then((pantry: string[]) => {
+        setSelectedIngredients(new Set(pantry));
+        console.log('Loaded pantry from DB:', pantry);
+      })
+      .catch((err) => {
+        console.error('Error loading pantry:', err);
+      });
+  }, [userId, setSelectedIngredients]);
+
+  // Update pantry in DB when selectedIngredients changes
+  useEffect(() => {
+    if (!userId) return;
+    fetch('/api/pantry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, pantry: Array.from(selectedIngredients) })
+    })
+      .then(res => res.json())
+      .then((data) => {
+        console.log('Updated pantry in DB:', data);
+      })
+      .catch((err) => {
+        console.error('Error updating pantry:', err);
+      });
+  }, [selectedIngredients, userId]);
 
   const filteredIngredients = ingredients.filter((ingredient) =>
     ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -97,7 +128,15 @@ export default function IngredientSelector() {
                     <Checkbox
                       id={ingredient.id}
                       checked={selectedIngredients.has(ingredient.name)}
-                      onCheckedChange={() => toggleIngredient(ingredient.name)}
+                      onCheckedChange={() => {
+                        const newSet = new Set(selectedIngredients);
+                        if (newSet.has(ingredient.name)) {
+                          newSet.delete(ingredient.name);
+                        } else {
+                          newSet.add(ingredient.name);
+                        }
+                        setSelectedIngredients(newSet);
+                      }}
                     />
                     <label
                       htmlFor={ingredient.id}
