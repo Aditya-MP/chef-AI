@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChefAI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>ChefAI</h2>
+      <nav>
+        <ul>
+          <li><a href="#" data-section="dashboard">Dashboard</a></li>
+          <li><a href="#" data-section="favorites">Favorites</a></li>
+          <li><a href="#" data-section="profile">Profile</a></li>
+        </ul>
+      </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Login/Register Form -->
+      <div id="auth-section">
+        <h2>Welcome to ChefAI</h2>
+        <form id="login-form">
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Password" required>
+          <button type="submit">Login</button>
+        </form>
+        <button id="show-register">Create Account</button>
+      </div>
+      
+      <!-- Dashboard (hidden until auth) -->
+      <div id="dashboard-section" style="display:none">
+        <h2>What's in your kitchen?</h2>
+        <div class="ingredient-selector">
+          <input type="text" id="ingredient-search" placeholder="Search ingredients...">
+          <div id="ingredient-results"></div>
+          <div id="selected-ingredients"></div>
+        </div>
+        
+        <div class="dietary-filters">
+          <label><input type="checkbox" value="vegetarian"> Vegetarian</label>
+          <label><input type="checkbox" value="vegan"> Vegan</label>
+          <label><input type="checkbox" value="gluten-free"> Gluten-Free</label>
+        </div>
+        
+        <button id="generate-recipes">Generate Recipes</button>
+        <div id="recipe-results"></div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
