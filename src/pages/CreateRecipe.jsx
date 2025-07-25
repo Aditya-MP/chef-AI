@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createRecipe } from '../services/api';
+import { createRecipe } from '../../chefai-frontend-extract/src/services/api';
 import { useAuth } from '../context/AuthContext';
 
 export default function CreateRecipe() {
