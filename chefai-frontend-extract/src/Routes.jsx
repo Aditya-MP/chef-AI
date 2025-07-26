@@ -10,6 +10,8 @@ import ApplicationSettings from "pages/application-settings";
 import FullScreenRecipeView from "pages/full-screen-recipe-view";
 import UserProfileManagement from "pages/user-profile-management";
 import IngredientRecognitionCameraInterface from "pages/ingredient-recognition-camera-interface";
+
+import RecipeGenerator from "pages/RecipeGenerator";
 import NotFound from "pages/NotFound";
 
 const Routes = () => {
@@ -27,6 +29,7 @@ const Routes = () => {
         <Route path="/full-screen-recipe-view" element={<FullScreenRecipeView />} />
         <Route path="/user-profile-management" element={<UserProfileManagement />} />
         <Route path="/ingredient-recognition-camera-interface" element={<IngredientRecognitionCameraInterface />} />
+        <Route path="/generate-recipe" element={<RecipeGenerator />} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
       </ErrorBoundary>
